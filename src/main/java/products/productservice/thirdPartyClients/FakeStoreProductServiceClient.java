@@ -17,12 +17,12 @@ import products.productservice.dtos.GenericProductDto;
 import java.util.List;
 @Component
 
-public class FakeStoreServiceClient {
+public class FakeStoreProductServiceClient {
     private RestTemplateBuilder restTemplateBuilder;
     private String getProductById;
     private String ProductUrl;
     @Autowired
-    public FakeStoreServiceClient(RestTemplateBuilder restTemplateBuilder, @Value("${fakeStore.api.BaseUrl}") String  FakeStoreBaseUrl, @Value("${fakeStore.api.product}") String FakeStoreProductPath) {
+    public FakeStoreProductServiceClient(RestTemplateBuilder restTemplateBuilder, @Value("${fakeStore.api.BaseUrl}") String  FakeStoreBaseUrl, @Value("${fakeStore.api.product}") String FakeStoreProductPath) {
         this.restTemplateBuilder = restTemplateBuilder;
         this.getProductById = FakeStoreBaseUrl + FakeStoreProductPath + "/{id}";
         this.ProductUrl = FakeStoreBaseUrl + FakeStoreProductPath;
