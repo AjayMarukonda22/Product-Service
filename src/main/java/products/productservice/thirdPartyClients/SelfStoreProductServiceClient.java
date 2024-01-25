@@ -3,6 +3,7 @@ package products.productservice.thirdPartyClients;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import products.productservice.Repositories.ProductRepository;
+import products.productservice.models.Orders;
 import products.productservice.models.Product;
 
 import java.util.List;
@@ -30,8 +31,13 @@ public class SelfStoreProductServiceClient {
 
 
     public void createProduct(Product product) {
+        List<Orders> orders = product.getOrders();
+        if (orders != null) {
+            for (Orders order : orders) {
+                order.getProductList().add(product);
+            }
+        }
         productRepository.save(product);
-        return ;
     }
 
     public Product updateProduct(UUID uuid, Product product) {

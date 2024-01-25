@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import products.productservice.Exceptions.NotFoundException;
 import products.productservice.dtos.GenericProductDto;
 import products.productservice.models.Category;
+import products.productservice.models.Orders;
 import products.productservice.models.Product;
 import products.productservice.thirdPartyClients.SelfStoreProductServiceClient;
 
@@ -73,6 +74,9 @@ public class SelfStoreProductService implements ProductService{
         product.setCategory(category1);
         product.setImage(genericProductDto.getImage());
         product.setPrice(genericProductDto.getPrice());
+        List<Orders> orders = genericProductDto.getOrders() != null ? new ArrayList<>(genericProductDto.getOrders()) : null;
+        product.setOrders(orders);
+
         return product;
     }
     public GenericProductDto convertProductToGenericProductDto(Product product) {
@@ -83,6 +87,7 @@ public class SelfStoreProductService implements ProductService{
         genericProductDto.setDescription(product.getDescription());
         genericProductDto.setCategory(product.getCategory().getName());
         genericProductDto.setPrice(product.getPrice());
+        genericProductDto.setOrders(new ArrayList<>(product.getOrders()));
         return genericProductDto;
     }
 }

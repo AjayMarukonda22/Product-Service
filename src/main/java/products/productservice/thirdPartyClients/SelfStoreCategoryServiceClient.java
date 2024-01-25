@@ -1,5 +1,6 @@
 package products.productservice.thirdPartyClients;
 
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import products.productservice.Repositories.CategoryRepository;

@@ -1,12 +1,12 @@
 package products.productservice.models;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Cascade;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -19,4 +19,6 @@ public class Product extends BaseModel {
     @JoinColumn(name = "category_id")
     private Category category;
     private double price;
+    @ManyToMany(mappedBy = "productList", cascade = CascadeType.ALL)
+    private List<Orders> orders = new ArrayList<>();
 }
