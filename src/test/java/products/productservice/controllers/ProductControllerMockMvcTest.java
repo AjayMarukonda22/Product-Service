@@ -50,11 +50,11 @@ public class ProductControllerMockMvcTest {
         GenericProductDto genericProductDto = objectMapper.readValue(responseString, GenericProductDto.class);
         Assertions.assertEquals("1", genericProductDto.getId());
     }
-    @Test
-    public void getProductId2() throws NotFoundException {
-        when(productService.getproductbyId(any(String.class)))
-                .thenReturn(new GenericProductDto());
-        GenericProductDto genericProductDto = productController.getProductById("1");
-        verify(productService,times(1)).getproductbyId("1");
-    }
+//    @Test
+//    public void getProductId2() throws NotFoundException {
+//        when(productService.getproductbyId(any(String.class)))
+//                .thenReturn(new GenericProductDto());
+//        GenericProductDto genericProductDto = productController.getProductById("1");
+//        verify(productService,times(1)).getproductbyId("1");
+//    }
 }

@@ -33,8 +33,7 @@ public class FakeStoreProductServiceClient {
         ResponseEntity<FakeStoreProductDto> response =  restTemplate.getForEntity(getProductById, FakeStoreProductDto.class,id);
         FakeStoreProductDto fakeStoreProductDto = response.getBody();
         if(fakeStoreProductDto == null) {
-            return null;
-            //throw new NotFoundException("The Product with " + id + " not found.");
+            throw new NotFoundException("The Product with " + id + " not found.");
         }
         return fakeStoreProductDto;
 
@@ -65,12 +64,15 @@ public class FakeStoreProductServiceClient {
         FakeStoreProductDto fakeStoreProductDto = response.getBody();
         return fakeStoreProductDto;
     }
-    public FakeStoreProductDto deleteProduct(String id) {
+    public FakeStoreProductDto deleteProduct(String id) throws NotFoundException{
         RestTemplate restTemplate = restTemplateBuilder.build();
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<GenericProductDto> entity = new HttpEntity<>(headers);
         ResponseEntity<FakeStoreProductDto> response =  restTemplate.exchange(getProductById,HttpMethod.DELETE, entity, FakeStoreProductDto.class, id);
         FakeStoreProductDto fakeStoreProductDto = response.getBody();
+        if(fakeStoreProductDto == null) {
+            throw new NotFoundException("The product with id " + id + " is not present");
+        }
         return fakeStoreProductDto;
     }
 }

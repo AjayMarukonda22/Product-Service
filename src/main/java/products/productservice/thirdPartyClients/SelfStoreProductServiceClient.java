@@ -1,11 +1,14 @@
 package products.productservice.thirdPartyClients;
 
+import org.hibernate.query.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import products.productservice.Exceptions.NotFoundException;
 import products.productservice.Repositories.ProductRepository;
 import products.productservice.models.Orders;
 import products.productservice.models.Product;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -31,12 +34,10 @@ public class SelfStoreProductServiceClient {
 
 
     public void createProduct(Product product) {
-        List<Orders> orders = product.getOrders();
-        if (orders != null) {
-            for (Orders order : orders) {
-                order.getProductList().add(product);
-            }
-        }
+        Orders order = new Orders();
+        List<Orders> orderList = new ArrayList<>();
+        orderList.add(order);
+        product.setOrders(orderList);
         productRepository.save(product);
     }
 

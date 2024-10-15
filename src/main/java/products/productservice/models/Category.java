@@ -17,7 +17,6 @@ import java.util.List;
 @NoArgsConstructor
 public class Category extends BaseModel{
     String name;
-    @OneToMany(mappedBy = "category", fetch = FetchType.EAGER)
-    @Fetch(FetchMode.SUBSELECT)
+    @OneToMany(mappedBy = "category")
     List<Product> products;
 }

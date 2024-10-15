@@ -1,6 +1,8 @@
 package products.productservice.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import products.productservice.Exceptions.NotFoundException;
 import products.productservice.dtos.FakeStoreProductDto;
@@ -13,16 +15,23 @@ import java.util.Optional;
 
 @Service("FakeStoreProductService")
 public class FakeStoreProductService implements ProductService {
+    private RedisTemplate redisTemplate;
     private FakeStoreProductServiceClient fakeStoreProductServiceClient;
     @Autowired
-    public FakeStoreProductService(FakeStoreProductServiceClient fakeStoreProductServiceClient) {
+    public FakeStoreProductService(FakeStoreProductServiceClient fakeStoreProductServiceClient, RedisTemplate<String, Object> redisTemplate) {
         this.fakeStoreProductServiceClient = fakeStoreProductServiceClient;
+        this.redisTemplate = redisTemplate;
     }
     @Override
     public GenericProductDto getproductbyId(String id) throws NotFoundException {
+       GenericProductDto genericProductDto = (GenericProductDto) redisTemplate.opsForValue().get(id);
+       if(genericProductDto != null)
+           return  genericProductDto;
 
-        return convertToGenericProductDto( fakeStoreProductServiceClient.getproductbyId(id));
 
+        GenericProductDto genericProductDto1 =  convertToGenericProductDto( fakeStoreProductServiceClient.getproductbyId(id));
+          redisTemplate.opsForValue().set(id, genericProductDto1);
+          return genericProductDto1;
     }
 
     @Override
@@ -52,7 +61,7 @@ public class FakeStoreProductService implements ProductService {
     }
 
     @Override
-    public Optional<GenericProductDto> deleteProduct(String id) {
+    public Optional<GenericProductDto> deleteProduct(String id) throws NotFoundException {
 
         GenericProductDto genericProductDto = convertToGenericProductDto(fakeStoreProductServiceClient.deleteProduct(id));
         return Optional.of(genericProductDto);

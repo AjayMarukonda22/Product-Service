@@ -12,5 +12,5 @@ public interface ProductService {
     public List<GenericProductDto> getAllProducts();
     public  Optional<GenericProductDto> createProduct(GenericProductDto genericProductDto);
     public GenericProductDto updateProduct(String id, GenericProductDto genericProductDto);
-    public Optional<GenericProductDto> deleteProduct(String id);
+    public Optional<GenericProductDto> deleteProduct(String id) throws NotFoundException;
 }

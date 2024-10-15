@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import products.productservice.Exceptions.NotFoundException;
+import products.productservice.dtos.FakeStoreProductDto;
 import products.productservice.dtos.GenericProductDto;
 import products.productservice.models.Category;
 import products.productservice.models.Orders;
@@ -15,9 +16,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-@Primary
-@Service("SelfStoreProductService")
 
+@Service("SelfStoreProductService")
+@Primary
 public class SelfStoreProductService implements ProductService{
     private SelfStoreProductServiceClient selfStoreProductServiceClient;
     @Autowired
@@ -28,8 +29,10 @@ public class SelfStoreProductService implements ProductService{
     public GenericProductDto getproductbyId(String id) throws NotFoundException {
         UUID uuid = UUID.fromString(id);
         Optional<Product> product = selfStoreProductServiceClient.getproductbyId(uuid);
+            if(product == null)
+                throw new NotFoundException("The Product with  id " + id + " is not found.");
             return product.map(this::convertProductToGenericProductDto)
-                    .orElseThrow(() -> new NotFoundException("The product with " + id + " is not found"));
+                    .orElseThrow(() -> new  NotFoundException("The Product with id " + id + " is not found."));
     }
 
     @Override
